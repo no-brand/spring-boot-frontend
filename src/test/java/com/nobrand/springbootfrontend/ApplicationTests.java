@@ -1,5 +1,6 @@
 package com.nobrand.springbootfrontend;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,19 @@ class ApplicationTests {
 		mvc.perform(MockMvcRequestBuilders.get("/hello"))
 		   .andExpect(MockMvcResultMatchers.status().isOk())
 		   .andExpect(MockMvcResultMatchers.content().string(hello));
+	}
+
+	@Test
+	public void helloDto() throws Exception {
+		String name = "hello";
+		int amount = 100;
+
+		mvc.perform(MockMvcRequestBuilders.get("/hello/dto")
+				                          .param("name", name)
+				                          .param("amount", String.valueOf(amount)))
+		   .andExpect(MockMvcResultMatchers.status().isOk())
+		   .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is(name)))
+		   .andExpect(MockMvcResultMatchers.jsonPath("$.amount", Matchers.is(amount)));
 	}
 
 }
